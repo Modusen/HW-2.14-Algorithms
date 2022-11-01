@@ -1,35 +1,30 @@
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        StringListImpl stringList = new StringListImpl(2);
-        System.out.println(stringList); // Вывод на экран массива
-        stringList.add("Something");
-        System.out.println(stringList); // Вывод на экран массива
-        stringList.add("Something1");
-        System.out.println(stringList); // Вывод на экран массива
-        stringList.add("Something2");
-        System.out.println(stringList); // Вывод на экран массива
-        stringList.set(0,"Замена");
-        System.out.println(stringList); // Вывод на экран массива
-        stringList.remove("Замена1");
-        stringList.remove("Замена1");
-        stringList.add(1,"Something5");
-        stringList.add(6,"Something5");
-        stringList.set(1,"Замена1");
-        stringList.add("Something2");
-        stringList.add("Something5");
-        stringList.set(4,"Something3");
-        System.out.println(stringList); // Вывод на экран массива
-//        stringList.indexOf("Something5");
-//        stringList.lastIndexOf("Something5");
-        stringList.get(2);
-        stringList.size();
-        stringList.isEmpty();
-        stringList.clear();
-        System.out.println(stringList); // Вывод на экран массива
-        stringList.isEmpty();
-        String[] stringList1 = stringList.toArray();
-        System.out.println(stringList1.toString()); // Вывод на экран массива
+//        StringListImpl stringList = new StringListImpl();
+//        long start = System.currentTimeMillis();
+//        StringListImpl.sortBubble(stringList.getStringList());
+//        System.out.println((System.currentTimeMillis()-start)/1000 + " секунд. Сортировка пузырьковая");
+//
+//        StringListImpl stringList1 = new StringListImpl();
+//        long start1 = System.currentTimeMillis();
+//        StringListImpl.sortSelection(stringList1.getStringList());
+//        System.out.println((System.currentTimeMillis()-start1)/1000 + " секунд. Сортировка выбором");
 
+        StringListImpl stringList2 = new StringListImpl();
+        long start2 = System.currentTimeMillis();
+        stringList2.sortInsertion(stringList2.getStringList());
+        System.out.println((System.currentTimeMillis()-start2)/1000 + " секунд. Сортировка вставкой");
+        System.out.println(stringList2);
+
+        long start3 = System.currentTimeMillis();
+        if (stringList2.contains(stringList2.getStringList(), 99998)) {
+            System.out.println("Запрашиваемый элемент есть в массиве");
+        } else {
+            System.out.println("Такого элемента нет");
+        }
+        System.out.println(System.currentTimeMillis()-start3 + " миллисекунд.");
     }
+
 }

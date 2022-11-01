@@ -1,19 +1,78 @@
 import java.util.Arrays;
 
 public class StringListImpl implements StringList {
-    private String[] stringList;
+    private Integer[] stringList;
     private int size;
 
     public StringListImpl() {
-        stringList = new String[10];
+        stringList = generateRandomArray();
     }
+
     public StringListImpl(int length) {
         size = length;
-        this.stringList = new String[length];
+        this.stringList = new Integer[length];
+    }
+
+    public static Integer[] generateRandomArray() {
+        java.util.Random random = new java.util.Random();
+        Integer[] arr = new Integer[100_000];
+        for (Integer i = 0; i < arr.length; i++) {
+            arr[i] = random.nextInt(100_000);
+        }
+        return arr;
+    }
+
+    public Integer[] getStringList() {
+        return stringList;
+    }
+
+    public void setStringList(Integer[] stringList) {
+        this.stringList = stringList;
+    }
+
+    void sortInsertion(Integer[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            int temp = arr[i];
+            int j = i;
+            while (j > 0 && arr[j - 1] >= temp) {
+                arr[j] = arr[j - 1];
+                j--;
+            }
+            arr[j] = temp;
+        }
+    }
+
+
+    public static void sortSelection(Integer[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            int minElementIndex = i;
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[j] < arr[minElementIndex]) {
+                    minElementIndex = j;
+                }
+            }
+            swapElements(arr, i, minElementIndex);
+        }
+    }
+
+    public static void sortBubble(Integer[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = 0; j < arr.length - 1 - i; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    swapElements(arr, j, j + 1);
+                }
+            }
+        }
+    }
+
+    private static void swapElements(Integer[] arr, Integer indexA, Integer indexB) {
+        Integer tmp = arr[indexA];
+        arr[indexA] = arr[indexB];
+        arr[indexB] = tmp;
     }
 
     @Override
-    public String add(String item) {
+    public Integer add(Integer item) {
         for (int i = 0; i < stringList.length; i++) {
             if (stringList[i] == null) {
                 stringList[i] = item;
@@ -22,8 +81,8 @@ public class StringListImpl implements StringList {
             }
             if (stringList.length == i + 1) {
                 size++;
-                String[] temp = stringList;
-                stringList = new String[size];
+                Integer[] temp = stringList;
+                stringList = new Integer[size];
                 for (int j = 0; j < temp.length; j++) {
                     stringList[j] = temp[j];
                 }
@@ -33,7 +92,7 @@ public class StringListImpl implements StringList {
     }
 
     @Override
-    public String add(int index, String item) {
+    public Integer add(int index, Integer item) {
         try {
             if (stringList[index] == null) {
                 stringList[index] = item;
@@ -46,7 +105,7 @@ public class StringListImpl implements StringList {
     }
 
     @Override
-    public String set(int index, String item) throws ArrayIndexOutOfBoundsException {
+    public Integer set(int index, Integer item) throws ArrayIndexOutOfBoundsException {
         try {
             stringList[index] = item;
             System.out.println("Строка " + '"' + item + '"' + " на позицию " + index + " была успешно добавлена");
@@ -57,13 +116,13 @@ public class StringListImpl implements StringList {
     }
 
     @Override
-    public String remove(String item) throws IllegalArgumentException {
+    public String removeByContent(Integer item) throws IllegalArgumentException {
         try {
             for (int i = 0; i < stringList.length; i++) {
                 if (stringList[i].equals(item)) {
                     stringList[i] = null;
                     System.out.println("Строка " + '"' + item + '"' + " была успешно удалена");
-                    return item;
+                    return Integer.toString(item);
                 }
                 throw new IllegalArgumentException();
             }
@@ -84,23 +143,44 @@ public class StringListImpl implements StringList {
         return Integer.toString(index);
     }
 
+//    @Override
+//    public boolean contains(Integer item) throws NullPointerException {
+//        try {
+//            for (int i = 0; i < stringList.length; i++) {
+//                if (stringList[i].equals(item)) {
+//                    System.out.println("Строка " + '"' + item + '"' + " найдена. Она находится на позиции " + i);
+//                    return true;
+//                }
+//            }
+//        } catch (NullPointerException e) {
+//            System.out.println("Строка " + '"' + item + '"' + " не найдена.");
+//        }
+//        return false;
+//    }
+
     @Override
-    public boolean contains(String item) throws NullPointerException {
-        try {
-            for (int i = 0; i < stringList.length; i++) {
-                if (stringList[i].equals(item)) {
-                    System.out.println("Строка " + '"' + item + '"' + " найдена. Она находится на позиции " + i);
-                    return true;
-                }
+    public boolean contains(Integer[] arr, int element) throws NullPointerException {
+        int min = 0;
+        int max = arr.length - 1;
+
+        while (min <= max) {
+            int mid = (min + max) / 2;
+
+            if (element == arr[mid]) {
+                return true;
             }
-        } catch (NullPointerException e) {
-            System.out.println("Строка " + '"' + item + '"' + " не найдена.");
+
+            if (element < arr[mid]) {
+                max = mid - 1;
+            } else {
+                min = mid + 1;
+            }
         }
         return false;
     }
 
     @Override
-    public int indexOf(String item) {
+    public int indexOf(Integer item) {
         try {
             for (int i = 0; i < stringList.length; i++) {
                 if (stringList[i].equals(item)) {
@@ -115,7 +195,7 @@ public class StringListImpl implements StringList {
     }
 
     @Override
-    public int lastIndexOf(String item) {
+    public int lastIndexOf(Integer item) {
         for (int i = stringList.length - 1; i >= 0; i--) {
             if (stringList[i] == null) {
                 i--;
@@ -129,7 +209,7 @@ public class StringListImpl implements StringList {
     }
 
     @Override
-    public String get(int index) throws ArrayIndexOutOfBoundsException {
+    public Integer get(int index) throws ArrayIndexOutOfBoundsException {
         try {
             return stringList[index];
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -147,7 +227,7 @@ public class StringListImpl implements StringList {
     @Override
     public int size() {
         int counter = stringList.length;
-        for (String s : stringList) {
+        for (Integer s : stringList) {
             if (s == null) {
                 counter--;
             }
@@ -158,7 +238,7 @@ public class StringListImpl implements StringList {
 
     @Override
     public boolean isEmpty() {
-        for (String s : stringList) {
+        for (Integer s : stringList) {
             if (s != null) {
                 System.out.println("Список не пуст");
                 return false;
@@ -178,7 +258,7 @@ public class StringListImpl implements StringList {
     }
 
     @Override
-    public String[] toArray() {
+    public Integer[] toArray() {
         return Arrays.copyOf(stringList, size);
     }
 
