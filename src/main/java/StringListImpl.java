@@ -15,7 +15,7 @@ public class StringListImpl implements StringList {
 
     public static Integer[] generateRandomArray() {
         java.util.Random random = new java.util.Random();
-        Integer[] arr = new Integer[100_000];
+        Integer[] arr = new Integer[5000];
         for (Integer i = 0; i < arr.length; i++) {
             arr[i] = random.nextInt(100_000);
         }
@@ -30,6 +30,27 @@ public class StringListImpl implements StringList {
         this.stringList = stringList;
     }
 
+    private static void swapElements(int[] arr, int left, int right) {
+        int temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+    }
+
+    void sortInsertionRecursion(Integer[] arr, int i, int n) {
+
+        int temp = arr[i];
+        int j = i;
+        while (j > 0 && arr[j - 1] >= temp) {
+            arr[j] = arr[j - 1];
+            j--;
+        }
+        arr[j] = temp;
+
+        if (i + 1 <= n) {
+            sortInsertionRecursion(arr, i+1, n);
+        }
+    }
+
     void sortInsertion(Integer[] arr) {
         for (int i = 1; i < arr.length; i++) {
             int temp = arr[i];
@@ -42,33 +63,13 @@ public class StringListImpl implements StringList {
         }
     }
 
-
-    public static void sortSelection(Integer[] arr) {
-        for (int i = 0; i < arr.length - 1; i++) {
-            int minElementIndex = i;
-            for (int j = i + 1; j < arr.length; j++) {
-                if (arr[j] < arr[minElementIndex]) {
-                    minElementIndex = j;
-                }
-            }
-            swapElements(arr, i, minElementIndex);
+    private void grow() {
+        size = size + size / 2;
+        Integer[] temp = stringList;
+        stringList = new Integer[size];
+        for (int j = 0; j < temp.length; j++) {
+            stringList[j] = temp[j];
         }
-    }
-
-    public static void sortBubble(Integer[] arr) {
-        for (int i = 0; i < arr.length - 1; i++) {
-            for (int j = 0; j < arr.length - 1 - i; j++) {
-                if (arr[j] > arr[j + 1]) {
-                    swapElements(arr, j, j + 1);
-                }
-            }
-        }
-    }
-
-    private static void swapElements(Integer[] arr, Integer indexA, Integer indexB) {
-        Integer tmp = arr[indexA];
-        arr[indexA] = arr[indexB];
-        arr[indexB] = tmp;
     }
 
     @Override
@@ -80,12 +81,7 @@ public class StringListImpl implements StringList {
                 break;
             }
             if (stringList.length == i + 1) {
-                size++;
-                Integer[] temp = stringList;
-                stringList = new Integer[size];
-                for (int j = 0; j < temp.length; j++) {
-                    stringList[j] = temp[j];
-                }
+                grow();
             }
         }
         return item;
@@ -142,21 +138,6 @@ public class StringListImpl implements StringList {
         }
         return Integer.toString(index);
     }
-
-//    @Override
-//    public boolean contains(Integer item) throws NullPointerException {
-//        try {
-//            for (int i = 0; i < stringList.length; i++) {
-//                if (stringList[i].equals(item)) {
-//                    System.out.println("Строка " + '"' + item + '"' + " найдена. Она находится на позиции " + i);
-//                    return true;
-//                }
-//            }
-//        } catch (NullPointerException e) {
-//            System.out.println("Строка " + '"' + item + '"' + " не найдена.");
-//        }
-//        return false;
-//    }
 
     @Override
     public boolean contains(Integer[] arr, int element) throws NullPointerException {

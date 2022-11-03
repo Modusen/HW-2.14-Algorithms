@@ -90,6 +90,19 @@ public class StringListImplTest {
         assertEquals(Arrays.toString(stringList.getStringList()), Arrays.toString(expected));
     }
     @Test
+    public void sortingRecursivePositiveTest() {
+        StringListImpl stringList = new StringListImpl(4);
+        stringList.add(0, 7);
+        stringList.add(1, 4);
+        stringList.add(2, 1);
+        stringList.add(3, 999);
+        stringList.sortInsertionRecursion(stringList.getStringList(),0,3);
+        Integer[] expected = new Integer[]{1,4,7,999};
+        System.out.println(Arrays.toString(stringList.getStringList()));
+        System.out.println(Arrays.toString(expected));
+        assertEquals(Arrays.toString(stringList.getStringList()), Arrays.toString(expected));
+    }
+    @Test
     public void containsItemPositiveTest() {
         StringListImpl stringList = new StringListImpl(2);
         stringList.add(0, 7);
